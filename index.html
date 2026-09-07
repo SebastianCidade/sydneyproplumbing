@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sydney Pro Plumbing</title>
+</head>
+<body>
+<h1>Sydney Pro Plumbing</h1>
+<h2>AI Receptionist</h2>
+<p>Hi! How can we help with your plumbing today?</p>
+
+<input id="name" placeholder="Your name">
+<input id="phone" placeholder="Phone number">
+<input id="suburb" placeholder="Suburb">
+<input id="job" placeholder="What plumbing work do you need?">
+
+<button onclick="submitLead()">Request a call</button>
+
+<p id="result"></p>
+
+<script>
+function submitLead() {
+  document.getElementById("result").innerText =
+  "Thanks! Your enquiry has been received. A plumber will contact you shortly.";
+}
+</script>
+
+</body>
+</html>
