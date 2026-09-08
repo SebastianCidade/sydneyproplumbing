@@ -1,44 +1,48 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-<title>Sydney Pro Plumbing</title>
+  <title>Sydney Pro Plumbing</title>
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
 
-input, button {
-  width: 100%;
-  padding: 12px;
-  margin: 6px 0;
-  box-sizing: border-box;
-}
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      box-sizing: border-box;
+    }
 
-button {
-  cursor: pointer;
-}
+    button {
+      cursor: pointer;
+    }
 
-#chat {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-top: 25px;
-  min-height: 150px;
-}
+    #chat {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-top: 25px;
+      min-height: 150px;
+    }
 
-.message {
-  margin: 10px 0;
-}
-</style>
+    .message {
+      margin: 10px 0;
+    }
+  </style>
+
 </head>
 
 <body>
 
 <h1>Sydney Pro Plumbing</h1>
+<h2>AI Receptionist</h2>
 
+<p>Hi! How can we help with your plumbing today?</p>
 <p>Need a plumber? Chat with our receptionist below.</p>
 
 <div id="chat">
@@ -48,25 +52,42 @@ button {
   </div>
 </div>
 
-<input id="message" placeholder="Type your message...">
+<input id="message" type="text" placeholder="Type your message...">
 
-<button onclick="sendMessage()">Send</button>
+<button type="button" onclick="sendMessage()">Send</button>
+
+<form action="https://formsubmit.co/bastiancidade@gmail.com" method="POST">
+
+  <input type="text" name="Name" placeholder="Your name" required>
+
+  <input type="tel" name="Phone" placeholder="Phone number" required>
+
+  <input type="text" name="Suburb" placeholder="Suburb" required>
+
+  <input type="text" name="Plumbing job" placeholder="What plumbing work do you need?" required>
+
+<button type="submit">Request a call</button>
+
+</form>
 
 <script>
 function sendMessage() {
-
   const input = document.getElementById("message");
   const chat = document.getElementById("chat");
 
-  if (input.value.trim() === "") return;
+  const message = input.value.trim();
+
+  if (message === "") {
+    return;
+  }
 
   chat.innerHTML +=
     "<div class='message'><strong>You:</strong> " +
-    input.value +
+    message +
     "</div>";
 
   chat.innerHTML +=
-    "<div class='message'><strong>AI Receptionist:</strong> Thanks! I'll collect your details and help arrange a call from the plumber.</div>";
+    "<div class='message'><strong>AI Receptionist:</strong> Thanks for contacting Sydney Pro Plumbing. Please fill in your details below and we'll get back to you.</div>";
 
   input.value = "";
 }
