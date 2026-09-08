@@ -4,5 +4,8 @@
   "main": "worker.js",
   "assets": {
     "directory": "."
+  },
+  "observability": {
+    "enabled": true
   }
 }
