@@ -78,7 +78,10 @@ Once you have enough information, explain that their enquiry can be submitted so
 
         return new Response(
           JSON.stringify({
-            reply: data.output_text || "I couldn't generate a response."
+reply:
+  data.output?.[0]?.content?.find(
+    item => item.type === "output_text"
+  )?.text || "I couldn't generate a response."
           }),
           {
             status: 200,
