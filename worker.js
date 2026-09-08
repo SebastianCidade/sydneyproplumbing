@@ -2,11 +2,24 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // AI CHAT ENDPOINT
     if (url.pathname === "/api/chat" && request.method === "POST") {
       try {
         const body = await request.json();
         const messages = body.messages || [];
+
+        if (!env.OPENAI_API_KEY) {
+          return new Response(
+            JSON.stringify({
+              error: "OPENAI_API_KEY is not connected to this Worker."
+            }),
+            {
+              status: 500,
+              headers: {
+                "Content-Type": "application/json"
+              }
+            }
+          );
+        }
 
         const response = await fetch(
           "https://api.openai.com/v1/responses",
@@ -21,11 +34,11 @@ export default {
               instructions: `
 You are the AI receptionist for Sydney Pro Plumbing in Sydney, NSW.
 
-Your job is to help customers with plumbing enquiries.
-
 Be friendly, professional and concise.
 
-Understand what the customer needs and ask useful follow-up questions.
+Help customers with plumbing enquiries.
+
+Ask useful questions to understand the plumbing problem.
 
 When appropriate, collect:
 - Customer name
@@ -34,14 +47,14 @@ When appropriate, collect:
 - Description of the plumbing problem
 - Preferred time for a plumber
 
-Do not claim that a plumber has been booked unless a real booking has been confirmed.
+Do not claim a booking has been made unless a real booking has been confirmed.
 
 Do not invent prices, availability or services.
 
-If the customer describes an immediate dangerous situation, advise them to stay safe and contact emergency services if there is immediate danger.
+If there is an immediate dangerous situation, tell the customer to stay safe and contact emergency services if necessary.
 
 Once you have enough information, explain that their enquiry can be submitted so Sydney Pro Plumbing can contact them.
-              `,
+`,
               input: messages
             })
           }
@@ -52,7 +65,7 @@ Once you have enough information, explain that their enquiry can be submitted so
         if (!response.ok) {
           return new Response(
             JSON.stringify({
-              error: data.error?.message || "AI request failed"
+              error: data.error?.message || "OpenAI rejected the request."
             }),
             {
               status: response.status,
@@ -65,9 +78,10 @@ Once you have enough information, explain that their enquiry can be submitted so
 
         return new Response(
           JSON.stringify({
-            reply: data.output_text || "Sorry, I couldn't generate a response."
+            reply: data.output_text || "I couldn't generate a response."
           }),
           {
+            status: 200,
             headers: {
               "Content-Type": "application/json"
             }
@@ -77,7 +91,7 @@ Once you have enough information, explain that their enquiry can be submitted so
       } catch (error) {
         return new Response(
           JSON.stringify({
-            error: "Something went wrong."
+            error: error.message || "Something went wrong."
           }),
           {
             status: 500,
@@ -89,7 +103,6 @@ Once you have enough information, explain that their enquiry can be submitted so
       }
     }
 
-    // SERVE YOUR EXISTING WEBSITE
     return env.ASSETS.fetch(request);
   }
 };
